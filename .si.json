@@ -1,0 +1,22 @@
+{
+  "plugin": "org.smartide.plugin.web",
+  "run": "echo 'no command need'",
+  "intelligence": {
+    ".html": {
+      "enabled": true,
+      "run": "vscode-html-language-server --stdio"
+    },
+    ".css": {
+      "enabled": true,
+      "run": "vscode-css-language-server --stdio"
+    },
+    ".js": {
+      "enabled": true,
+      "run": "typescript-language-server --stdio"
+    },
+    ".json": {
+      "enabled": true,
+      "run": "vscode-json-language-server --stdio"
+    }
+  }
+}

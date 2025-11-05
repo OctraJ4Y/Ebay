@@ -1,0 +1,379 @@
+/* === RESET & ROOT === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0A0A0A;
+    color: #FFFFFF;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+[data-theme="light"] {
+    background: #F5F5F5;
+    color: #000000;
+}
+
+/* === CONTAINER === */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* === NAVBAR – MOBILE FIRST === */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(20,20,20,0.9);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #FF0000;
+}
+.nav-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+}
+.menu-icon { width: 24px; height: 24px; }
+
+/* Desktop: Nav horizontal */
+.nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: rgba(20,20,20,0.95);
+    backdrop-filter: blur(12px);
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.nav-menu.active { display: flex; }
+
+.nav-link {
+    color: #A0A0A0;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+}
+.nav-link:hover { color: #FFFFFF; }
+
+.admin-btn {
+    background: #FF0000; color: white; border: none; padding: 0.5rem 1rem;
+    border-radius: 8px; font-weight: 600; opacity: 0; pointer-events: none;
+}
+.admin-btn.visible { opacity: 1; pointer-events: all; }
+.toggle-btn {
+    background: #FF0000; color: white; border: none; padding: 0.5rem 1rem;
+    border-radius: 8px; font-weight: 600;
+}
+
+/* === DESKTOP NAVBAR === */
+@media (min-width: 768px) {
+    .nav-toggle { display: none; }
+    .nav-menu {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        background: none;
+        backdrop-filter: none;
+        padding: 0;
+        gap: 2rem;
+        border: none;
+    }
+    .nav-link { padding: 0; }
+}
+
+/* === HERO === */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), #0A0A0A;
+}
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FF0000;
+    margin-bottom: 1rem;
+}
+.hero-content p {
+    font-size: 1.2rem;
+    color: #A0A0A0;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+}
+.cta {
+    background: #FF0000;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* === PRODUCTS === */
+.products { padding: 6rem 1.5rem 4rem; }
+.section-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #FF0000;
+    margin-bottom: 2rem;
+}
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+.filter-form input {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(20,20,20,0.7);
+    color: white;
+    width: 100%;
+    max-width: 200px;
+}
+.filter-form button {
+    background: #FF0000;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* === GRID – RESPONSIVE === */
+.product-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+@media (min-width: 768px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* === CARD === */
+.product-card {
+    background: rgba(20,20,20,0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(255,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+.product-card:hover { transform: translateY(-8px); }
+.product-gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 8px;
+    scroll-snap-type: x mandatory;
+}
+.product-gallery img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+}
+.product-info { padding: 1.5rem; }
+.product-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+.price { font-size: 1.5rem; color: #FF0000; font-weight: bold; }
+.description {
+    font-size: 0.9rem;
+    color: #A0A0A0;
+    margin: 1rem 0;
+    max-height: 80px;
+    overflow-y: auto;
+}
+.ebay-btn {
+    background: #FF0000;
+    color: white;
+    padding: 0.9rem;
+    text-align: center;
+    border-radius: 12px;
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+}
+.ebay-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: #CC0000;
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* === MODAL, FOOTER, UTILS === */
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+.modal-content {
+    background: rgba(20,20,20,0.9);
+    backdrop-filter: blur(12px);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.close { float: right; font-size: 2rem; cursor: pointer; color: #A0A0A0; }
+.item-entry { display: flex; justify-content: space-between; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px; margin: 0.5rem 0; }
+.remove-btn { background: #CC0000; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; }
+
+footer { padding: 2rem 1.5rem; text-align: center; color: #A0A0A0; font-size: 0.9rem; }
+.loading { text-align: center; padding: 3rem; color: #A0A0A0; font-style: italic; }
+.error { text-align: center; padding: 2rem; color: #FF0000; background: rgba(255,0,0,0.1); border-radius: 8px; }
+
+/* Light Mode */
+[data-theme="light"] .navbar,
+[data-theme="light"] .product-card,
+[data-theme="light"] .modal-content {
+    background: rgba(255,255,255,0.9);
+    border-color: rgba(0,0,0,0.1);
+}
+[data-theme="light"] .hero { background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #F5F5F5; }
+
+/* === ANIMATIONEN === */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { opacity: 0; }
+.fade-in.animate { animation: fadeInUp 0.6s ease forwards; }
+
+.product-card:hover { transform: translateY(-12px) scale(1.02); }
+
+/* Navbar Slide-In */
+.nav-menu {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+.nav-menu.active {
+    transform: translateY(0);
+}
+
+/* === SPECS BUTTON === */
+.btn-group {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+.ebay-btn, .specs-btn {
+    flex: 1;
+    padding: 0.9rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.ebay-btn {
+    background: #FF0000;
+    color: white;
+    text-decoration: none;
+}
+.specs-btn {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+.specs-btn:hover:not(:disabled) {
+    background: #555;
+    transform: translateY(-2px);
+}
+.specs-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Specs Modal */
+.specs-modal {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+#specs-content div {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#specs-content div:last-child { border: none; }
+
+/* Smooth Scroll */
+html { scroll-behavior: smooth; }
+
+/* Light Mode Anpassung */
+[data-theme="light"] .specs-btn { background: #ddd; color: #000; border-color: #bbb; }
+[data-theme="light"] .specs-btn:hover { background: #ccc; }
+
+
+/* === SCHRIFTART: IBM PLEX SANS CONDENSED (600) === */
+body {
+    font-family: 'IBM Plex Sans Condensed', 'Inter', sans-serif;
+    font-weight: 600; /* SemiBold */
+    background: #0A0A0A;
+    color: #FFFFFF;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+
+/* Fallback für Light Mode */
+[data-theme="light"] {
+    background: #F5F5F5;
+    color: #000000;
+}
+
+/* Überschriften: Etwas dicker für Kontrast */
+h1, h2, h3, .section-title, .logo {
+    font-weight: 600 !important;
+    letter-spacing: -0.5px;
+}
+
+/* Buttons & Inputs: Auch Condensed */
+.ebay-btn, .specs-btn, .toggle-btn, .admin-btn,
+input, button, .filter-form input, .filter-form button {
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-weight: 600;
+}
+
+/* Logo & Titel: Etwas enger */
+.logo, .hero h1 {
+    letter-spacing: -1px;
+}
+
+/* Modal Texte */
+.modal-content, #specs-content {
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
