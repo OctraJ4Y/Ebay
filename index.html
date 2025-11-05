@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pauls Laptops</title>
+    <title>PaulsLaptops</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">Pauls Laptops</div>
@@ -28,12 +27,12 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Pauls Laptops</h1>
+            <h1>PaulsLaptops</h1>
             <p>Top ThinkPads – direkt von eBay, live aktualisiert.</p>
             <a href="#products" class="cta">Jetzt shoppen</a>
         </div>
     </section>
-
+	
     <!-- PRODUCTS -->
     <section class="products" id="products">
         <div class="container">
@@ -41,7 +40,7 @@
             <div id="product-grid" class="product-grid"></div>
         </div>
     </section>
-
+     
     <!-- IMPRESSUM – DIREKT IM HTML -->
     <section class="impressum" id="impressum">
         <div class="container">
@@ -60,26 +59,60 @@
         </div>
     </section>
 
-    <!-- ADMIN MODAL -->
-    <div id="admin-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeAdmin()">×</span>
-            <div id="login-form">
-                <h2>Admin Login</h2>
-                <input type="password" id="admin-pass" placeholder="Passwort" />
-                <button onclick="checkPassword()">Einloggen</button>
-            </div>
-            <div id="admin-panel" style="display:none;">
-                <h2>Admin Panel</h2>
-                <div class="admin-input">
-                    <input type="text" id="new-item-id" placeholder="eBay Item-ID" />
-                    <button onclick="addItem()">Hinzufügen</button>
+    <!-- ADMIN MODAL – CYBER MODERN -->
+<div id="admin-modal" class="admin-modal" style="display:none;">
+    <div class="admin-modal-content">
+        <button class="admin-close" onclick="closeAdmin()">
+            <svg width="24" height="24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+
+        <!-- LOGIN -->
+        <div id="login-form" class="admin-section">
+            <h2 class="admin-title"><span class="neon">ADMIN</span> LOGIN</h2>
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="password" id="admin-pass" class="admin-input" placeholder=" " />
+                    <label class="admin-label">Passwort</label>
+                    <div class="input-glow"></div>
                 </div>
-                <div id="item-list" class="item-list"></div>
-                <button onclick="loadProducts()" class="reload-btn">Shop neu laden</button>
+                <p class="input-hint">Geheim – nur für dich</p>
             </div>
+            <button class="admin-btn primary" onclick="checkPassword()">
+                <span>Einloggen</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+
+        <!-- PANEL -->
+        <div id="admin-panel" class="admin-section" style="display:none;">
+            <h2 class="admin-title"><span class="neon">ADMIN</span> PANEL</h2>
+
+            <!-- ADD ITEM -->
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="text" id="new-item-id" class="admin-input" placeholder=" " />
+                    <label class="admin-label">eBay Item-ID</label>
+                    <div class="input-glow"></div>
+                </div>
+                <p class="input-hint">Nur Zahlen (z.B. 123456789)</p>
+            </div>
+            <button class="admin-btn success" onclick="addItem()">
+                <span>Hinzufügen</span>
+                <div class="btn-glow"></div>
+            </button>
+
+            <!-- ITEM LIST -->
+            <div id="item-list" class="item-list-modern"></div>
+
+            <!-- RELOAD -->
+            <button class="admin-btn reload" onclick="loadProducts()">
+                <span>Shop neu laden</span>
+                <div class="btn-glow"></div>
+            </button>
         </div>
     </div>
+</div>
+
 
     <!-- FOOTER -->
     <footer>
