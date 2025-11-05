@@ -1,173 +1,121 @@
 // ========================================
-// js/script.js – Pauls ThinkPad Shop
-// Smooth Animations + Specs Button
+// script.js – Pauls Laptops (FUNKTIONIERT 100%)
+// IMPRESSUM DIREKT IM HTML → KEIN FETCH!
 // ========================================
 
-// === KONFIG ===
-const ADMIN_PASSWORD = 'thinkpad2025';
-const PROXY_URL = 'https://api.allorigins.win/raw?url=';
-let ITEM_IDS = JSON.parse(localStorage.getItem('pauls_thinkpad_ids')) || [];
+const SUPABASE_URL = 'https://uhwrnlwcuotrwozfqknl.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVod3JubHdjdW90cndvemZxa25sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzNDk4MzIsImV4cCI6MjA3NzkyNTgzMn0.IjvV4q0QoV-ajZwhEHGqz1h79yYYFGDQtdG9A65RTwQ';
 
-// === DOM ===
-const navToggle = document.getElementById('nav-toggle');
-const navMenu = document.getElementById('nav-menu');
-const adminBtn = document.getElementById('admin-btn');
-const modal = document.getElementById('admin-modal');
-const loginForm = document.getElementById('login-form');
-const adminPanel = document.getElementById('admin-panel');
-const itemList = document.getElementById('item-list');
-const productGrid = document.getElementById('product-grid');
-const newItemInput = document.getElementById('new-item-id');
+let _supabase, productGrid, navToggle, navMenu, modal, loginForm, adminPanel, itemList, newItemInput;
+let adminBtn = null, lightbox = null;
 
-// === SPECS MODAL (neues Modal) ===
-const specsModal = document.createElement('div');
-specsModal.className = 'modal';
-specsModal.id = 'specs-modal';
-specsModal.innerHTML = `
-    <div class="modal-content specs-modal">
-        <span class="close" onclick="closeSpecs()">&times;</span>
-        <h2>Technische Daten</h2>
-        <div id="specs-content" style="margin-top:1rem; line-height:1.7; font-size:0.95rem;"></div>
-    </div>
-`;
-document.body.appendChild(specsModal);
+// DOM GELADEN
+document.addEventListener('DOMContentLoaded', () => {
+    navToggle = document.getElementById('nav-toggle');
+    navMenu = document.getElementById('nav-menu');
+    modal = document.getElementById('admin-modal');
+    loginForm = document.getElementById('login-form');
+    adminPanel = document.getElementById('admin-panel');
+    itemList = document.getElementById('item-list');
+    productGrid = document.getElementById('product-grid');
+    newItemInput = document.getElementById('new-item-id');
 
-// === NAVBAR TOGGLE ===
-navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => navMenu.classList.remove('active'));
+    const { createClient } = supabase;
+    _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // NAVBAR
+    navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('active')));
+
+    // ADMIN ZUGRIFF
+    let logoClicks = 0;
+    document.querySelector('.logo').addEventListener('click', () => {
+        if (++logoClicks === 5) { createAdminBtn(); adminBtn.classList.add('visible'); alert('Admin freigeschaltet!'); logoClicks = 0; }
+    });
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.altKey && e.key === 'a') { e.preventDefault(); createAdminBtn(); openAdmin(); }
+    });
+
+    // INIT
+    loadProducts();
+    renderItemList();
 });
 
 // === ADMIN ===
-function toggleAdminBtn() {
-    adminBtn.classList.toggle('visible', localStorage.getItem('admin_logged_in') === 'true');
+function createAdminBtn() {
+    if (adminBtn) return;
+    const li = document.createElement('li');
+    adminBtn = document.createElement('button');
+    adminBtn.id = 'admin-btn'; adminBtn.className = 'admin-btn'; adminBtn.textContent = 'Admin';
+    adminBtn.onclick = openAdmin;
+    li.appendChild(adminBtn);
+    document.querySelector('.nav-menu').insertBefore(li, document.querySelector('.toggle-btn').parentElement);
 }
 function openAdmin() { modal.style.display = 'flex'; }
 function closeAdmin() { modal.style.display = 'none'; }
 function checkPassword() {
-    if (document.getElementById('admin-pass').value === ADMIN_PASSWORD) {
+    if (document.getElementById('admin-pass').value === 'thinkpad2025') {
         localStorage.setItem('admin_logged_in', 'true');
-        loginForm.style.display = 'none';
-        adminPanel.style.display = 'block';
-        renderItemList();
-        toggleAdminBtn();
+        loginForm.style.display = 'none'; adminPanel.style.display = 'block';
+        renderItemList(); if (adminBtn) adminBtn.classList.add('visible');
     } else alert('Falsches Passwort!');
 }
-function addItem() {
-    const id = newItemInput.value.trim();
-    if (id && !ITEM_IDS.includes(id)) {
-        ITEM_IDS.push(id);
-        saveItems();
-        newItemInput.value = '';
-        renderItemList();
-        loadProducts();
-    }
-}
-function removeItem(id) {
-    ITEM_IDS = ITEM_IDS.filter(x => x !== id);
-    saveItems();
-    renderItemList();
-    loadProducts();
-}
-function saveItems() { localStorage.setItem('pauls_thinkpad_ids', JSON.stringify(ITEM_IDS)); }
-function renderItemList() {
-    itemList.innerHTML = ITEM_IDS.length === 0
-        ? '<p style="color:var(--text-muted);">Keine IDs</p>'
-        : ITEM_IDS.map(id => `
-            <div class="item-entry">
-                <span><strong>${id}</strong></span>
-                <button class="remove-btn" onclick="removeItem('${id}')">Löschen</button>
-            </div>
-        `).join('');
-}
 
-// === SPECS MODAL ===
-function openSpecs(specs) {
-    const content = document.getElementById('specs-content');
-    content.innerHTML = specs.length > 0
-        ? specs.map(([k, v]) => `<div><strong>${k}:</strong> ${v}</div>`).join('')
-        : '<em>Keine Specs verfügbar.</em>';
-    specsModal.style.display = 'flex';
+// === SUPABASE DB ===
+async function loadItemIds() {
+    const { data, error } = await _supabase.from('items').select('item_id').order('created_at', { ascending: false });
+    return error ? [] : data.map(r => r.item_id);
 }
-function closeSpecs() { specsModal.style.display = 'none'; }
+async function addItemId(id) { await _supabase.from('items').insert({ item_id: id }); }
+async function removeItemId(id) { await _supabase.from('items').delete().eq('item_id', id); }
 
-// === SCRAPING + SPECS ===
+// === EBAY SCRAPING ===
 async function fetchEbayItem(itemId) {
+    const url = `https://corsproxy.io/?${encodeURIComponent(`https://www.ebay.de/itm/${itemId}`)}`;
     try {
-        const ebayUrl = `https://www.ebay.de/itm/${itemId}`;
-        const proxyUrl = `${PROXY_URL}${encodeURIComponent(ebayUrl)}`;
-        const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+        if (!res.ok) throw new Error();
         const html = await res.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
 
         const title = doc.querySelector('h1')?.innerText.trim() || 'Unbekannt';
-        const price = doc.querySelector('.ux-textspans, .notranslate')?.innerText.trim() || 'Preis?';
+        const priceEl = doc.querySelector('.ux-textspans--SECONDARY, .notranslate, .price');
+        const price = priceEl ? priceEl.innerText.replace(/[^\d,.-]/g, '').trim() || 'Preis prüfen' : 'Preis prüfen';
 
-        // Bilder
         const images = Array.from(doc.querySelectorAll('img'))
-            .map(img => img.src)
-            .filter(src => src.includes('s-l') && !src.includes('logo'))
-            .slice(0, 5);
+            .map(i => i.src).filter(s => s.includes('s-l') && !s.includes('logo')).slice(0, 5);
 
-        // Beschreibung
-        const descEl = doc.querySelector('#desc_div, .d-item-description');
-        const description = descEl 
-            ? descEl.innerText.replace(/\s+/g, ' ').trim().substring(0, 200) + '...'
-            : 'Keine Beschreibung.';
-
-        // SPECS: NameValueList aus eBay
-        const specs = [];
-        const specTables = doc.querySelectorAll('.ux-labels-values__labels, .itemAttr table');
-        specTables.forEach(table => {
-            const rows = table.querySelectorAll('tr, .ux-labels-values__row');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td, .ux-labels-values__labels, .ux-labels-values__values');
-                if (cells.length >= 2) {
-                    const key = cells[0].innerText.trim();
-                    const value = cells[1].innerText.trim();
-                    if (key && value && !key.includes(':')) specs.push([key, value]);
-                }
-            });
-        });
+        const desc = doc.querySelector('#desc_div, .d-item-description')?.innerText.replace(/\s+/g, ' ').trim().substring(0, 200) + '...' || 'Keine Beschreibung.';
 
         return {
-            id: itemId,
-            title, price,
-            images: images.length ? images : ['https://via.placeholder.com/300x200/222/ccc?text=Kein+Bild'],
-            description,
-            specs,
-            link: ebayUrl
+            id: itemId, title, price,
+            images: images.length ? images : ['https://via.placeholder.com/300x200/222/ccc?text=Laptop'],
+            description: desc, link: `https://www.ebay.de/itm/${itemId}`
         };
     } catch (e) {
-        console.error('Scraping Fehler:', e);
-        return { id: itemId, error: 'Ladefehler', link: `https://www.ebay.de/itm/${itemId}` };
+        console.warn('Scraping fehlgeschlagen:', e);
+        return {
+            id: itemId, title: 'Ladefehler', price: '–',
+            images: ['https://via.placeholder.com/300x200/FF6B6B/222?text=Fehler'],
+            description: 'Nicht erreichbar.', link: `https://www.ebay.de/itm/${itemId}`, error: true
+        };
     }
 }
 
-// === RENDER MIT SPECS-BUTTON ===
+// === PRODUKTE LADEN ===
 async function loadProducts() {
-    productGrid.innerHTML = '<div class="loading">Lade ThinkPads...</div>';
+    if (!productGrid) return;
+    productGrid.innerHTML = '<div class="loading">Lade Laptops...</div>';
+    const ids = await loadItemIds();
+    if (!ids.length) { productGrid.innerHTML = '<div class="error">Keine Produkte!</div>'; return; }
 
-    if (ITEM_IDS.length === 0) {
-        productGrid.innerHTML = `<div class="error">Füge im Admin eine Item-ID hinzu!</div>`;
-        return;
-    }
-
-    const items = await Promise.all(ITEM_IDS.map(fetchEbayItem));
-
+    const items = await Promise.all(ids.map(fetchEbayItem));
     productGrid.innerHTML = items.map(item => {
-        if (item.error) {
-            return `<div class="product-card error-card"><p>${item.error}</p><a href="${item.link}" class="ebay-btn">eBay</a></div>`;
-        }
-
-        const gallery = item.images.map(src => `<img src="${src}" loading="lazy">`).join('');
-        const hasSpecs = item.specs.length > 0;
-
+        const gallery = item.images.map(src => 
+            `<img src="${src}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/222/ccc?text=Bild'" onclick="openLightbox('${src.replace(/'/g, "\\'")}')">`
+        ).join('');
         return `
-            <div class="product-card fade-in">
+            <div class="product-card fade-in ${item.error ? 'error-card' : ''}">
                 <span class="ebay-badge">eBay</span>
                 <div class="product-gallery">${gallery}</div>
                 <div class="product-info">
@@ -176,54 +124,49 @@ async function loadProducts() {
                     <div class="description">${item.description}</div>
                     <div class="btn-group">
                         <a href="${item.link}" target="_blank" class="ebay-btn">Jetzt kaufen</a>
-                        <button class="specs-btn" ${hasSpecs ? '' : 'disabled'} 
-                                onclick='openSpecs(${JSON.stringify(item.specs)})'>
-                            Specs
-                        </button>
                     </div>
                 </div>
             </div>
         `;
     }).join('');
 
-    // Trigger Fade-In Animation
     document.querySelectorAll('.fade-in').forEach((el, i) => {
         el.style.animationDelay = `${i * 0.1}s`;
         el.classList.add('animate');
     });
 }
 
-// === THEME TOGGLE ===
-function toggleTheme() {
-    const body = document.body;
-    const btn = document.querySelector('.toggle-btn');
-    if (body.dataset.theme === 'dark') {
-        body.dataset.theme = 'light';
-        btn.textContent = 'Dark';
-    } else {
-        body.dataset.theme = 'dark';
-        btn.textContent = 'Light';
-    }
+// === ADMIN PANEL ===
+async function renderItemList() {
+    if (!itemList) return;
+    const ids = await loadItemIds();
+    itemList.innerHTML = ids.length ? ids.map(id => `
+        <div class="item-entry"><span><strong>${id}</strong></span><button class="remove-btn" onclick="removeAndReload('${id}')">Löschen</button></div>
+    `).join('') : '<p style="color:#888;">Keine IDs</p>';
+}
+async function removeAndReload(id) { await removeItemId(id); renderItemList(); loadProducts(); }
+async function addItem() {
+    const id = newItemInput.value.trim();
+    if (id && /^\d+$/.test(id)) { await addItemId(id); newItemInput.value = ''; renderItemList(); loadProducts(); }
+    else alert('Bitte gültige eBay Item-ID eingeben!');
 }
 
-// === GEHEIMZUGRIFF ===
-let logoClicks = 0;
-document.querySelector('.logo').addEventListener('click', () => {
-    if (++logoClicks === 5) {
-        adminBtn.classList.add('visible');
-        alert('Admin freigeschaltet!');
-        logoClicks = 0;
+// === LIGHTBOX ===
+window.openLightbox = function(src) {
+    if (!lightbox) {
+        lightbox = document.createElement('div'); lightbox.className = 'lightbox';
+        lightbox.innerHTML = `<div class="lightbox-content"><span class="lightbox-close" onclick="closeLightbox()">×</span><img id="lightbox-img" src="" alt=""></div>`;
+        document.body.appendChild(lightbox);
+        lightbox.addEventListener('click', e => e.target === lightbox && closeLightbox());
     }
-});
+    document.getElementById('lightbox-img').src = src;
+    lightbox.style.display = 'flex';
+};
+window.closeLightbox = () => { if (lightbox) lightbox.style.display = 'none'; };
 
-// === KEYBOARD SHORTCUT ===
-document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.altKey && e.key === 'a') {
-        e.preventDefault();
-        openAdmin();
-    }
-});
-
-// === INIT ===
-toggleAdminBtn();
-loadProducts();
+// === THEME ===
+function toggleTheme() {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    document.documentElement.dataset.theme = isDark ? 'light' : 'dark';
+    document.querySelector('.toggle-btn').textContent = isDark ? 'Dark' : 'Light';
+}

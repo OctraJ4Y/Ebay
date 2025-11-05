@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pauls Laptops – Premium Refurbished</title>
-    <link rel="stylesheet" href="css/styles.css">
-    
-    <!-- IBM PLEX SANS CONDENSED (SemiBold 600) -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pauls Laptops</title>
+    <link rel="stylesheet" href="css/styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
 </head>
-<body data-theme="dark">
+<body>
 
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">Pauls Laptops</div>
-        <button class="nav-toggle" id="nav-toggle">
-            <img src="assets/menu.svg" alt="Menu" class="menu-icon">
+        <button id="nav-toggle" class="nav-toggle">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+            </svg>
         </button>
-        <ul class="nav-menu" id="nav-menu">
-            <li><a href="#home" class="nav-link">Home</a></li>
-            <li><a href="#products" class="nav-link">Laptops</a></li>
-            <li><button id="admin-btn" class="admin-btn" onclick="openAdmin()">Admin</button></li>
+        <ul id="nav-menu" class="nav-menu">
+            <li><a href="#" class="nav-link">Home</a></li>
+            <li><a href="#" class="nav-link">Shop</a></li>
+            <li><a href="#" class="nav-link">Kontakt</a></li>
             <li><button class="toggle-btn" onclick="toggleTheme()">Light</button></li>
         </ul>
     </nav>
 
     <!-- HERO -->
-    <section class="hero" id="home">
+    <section class="hero">
         <div class="hero-content">
             <h1>Pauls Laptops</h1>
-            <p>Premium Refurbished – Live von eBay</p>
-            <a href="#products" class="ebay-btn cta">Jetzt shoppen</a>
+            <p>Top ThinkPads – direkt von eBay, live aktualisiert.</p>
+            <a href="#products" class="cta">Jetzt shoppen</a>
         </div>
     </section>
 
@@ -38,47 +38,59 @@
     <section class="products" id="products">
         <div class="container">
             <h2 class="section-title">Verfügbare Laptops</h2>
-            <form class="filter-form" onsubmit="event.preventDefault(); applyFilters();">
-                <input type="text" id="model-filter" placeholder="Modell (z.B. T14)">
-                <input type="text" id="ram-filter" placeholder="RAM (z.B. 16GB)">
-                <button type="submit">Filtern</button>
-            </form>
-            <div class="product-grid" id="product-grid">
-                <div class="loading">Lade Laptops...</div>
+            <div id="product-grid" class="product-grid"></div>
+        </div>
+    </section>
+
+    <!-- IMPRESSUM – DIREKT IM HTML -->
+    <section class="impressum" id="impressum">
+        <div class="container">
+            <h2>Impressum</h2>
+            <div class="impressum-content">
+                <p><strong>Pauls Laptops</strong></p>
+                <p>Paul Mustermann</p>
+                <p>Musterstraße 123</p>
+                <p>80331 München</p>
+                <p>Deutschland</p>
+                <p>Telefon: <a href="tel:+49891234567">+49 89 1234567</a></p>
+                <p>E-Mail: <a href="mailto:info@paulslaptops.de">info@paulslaptops.de</a></p>
+                <p>USt-ID: DE123456789</p>
+                <p><strong>Verantwortlich für den Inhalt:</strong> Paul Mustermann</p>
+                <p><em>Alle Angaben ohne Gewähr. Preise können variieren.</em></p>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <p>© 2025 Pauls Laptops | 100 % Kontrolle – Keine API</p>
-        </div>
-    </footer>
-
     <!-- ADMIN MODAL -->
-    <div id="admin-modal" class="modal">
+    <div id="admin-modal" class="modal" style="display:none;">
         <div class="modal-content">
-            <span class="close" onclick="closeAdmin()">x</span>
-            <h2>Admin Panel</h2>
-            <p><strong>Passwort:</strong> <code>thinkpad2025</code></p>
+            <span class="close" onclick="closeAdmin()">×</span>
             <div id="login-form">
-                <input type="password" id="admin-pass" placeholder="Passwort eingeben" />
+                <h2>Admin Login</h2>
+                <input type="password" id="admin-pass" placeholder="Passwort" />
                 <button onclick="checkPassword()">Einloggen</button>
             </div>
             <div id="admin-panel" style="display:none;">
-                <h3>Neue eBay Item-ID</h3>
-                <input type="text" id="new-item-id" placeholder="z.B. 336157549258" />
-                <button onclick="addItem()">Hinzufügen</button>
-                <h3>Deine Items</h3>
-                <div id="item-list"></div>
+                <h2>Admin Panel</h2>
+                <div class="admin-input">
+                    <input type="text" id="new-item-id" placeholder="eBay Item-ID" />
+                    <button onclick="addItem()">Hinzufügen</button>
+                </div>
+                <div id="item-list" class="item-list"></div>
                 <button onclick="loadProducts()" class="reload-btn">Shop neu laden</button>
             </div>
         </div>
     </div>
 
-    <!-- SPECS MODAL (wird von JS eingefügt) -->
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Pauls Laptops | <a href="#impressum">Impressum</a></p>
+        </div>
+    </footer>
 
+    <!-- SDK + SCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
