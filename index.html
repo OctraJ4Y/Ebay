@@ -1,128 +1,184 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang="de" data-theme="auto">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PaulsLaptops</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PaulsLaptops</title>
+  <meta name="description" content="Top ThinkPads – direkt von eBay, live aktualisiert." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Schrift -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="logo">Pauls Laptops</div>
-        <button id="nav-toggle" class="nav-toggle">
-            <svg class="menu-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
-            </svg>
+  <header class="site-header">
+    <div class="container header-inner">
+      <button id="logo" class="logo" aria-label="PaulsLaptops - zum Aktivieren klicken">PaulsLaptops</button>
+
+      <nav class="nav" aria-label="Hauptnavigation">
+        <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menü öffnen">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </button>
-        <ul id="nav-menu" class="nav-menu">
-            <li><a href="#" class="nav-link">Home</a></li>
-            <li><a href="#" class="nav-link">Shop</a></li>
-            <li><a href="#" class="nav-link">Kontakt</a></li>
-            <li><button class="toggle-btn" onclick="toggleTheme()">Light</button></li>
+
+        <ul id="nav-menu" class="nav-menu" data-open="false">
+          <li><a href="#" class="nav-link">Home</a></li>
+          <li><a href="#products" class="nav-link">Shop</a></li>
+          <li><a href="#impressum" class="nav-link">Kontakt / Impressum</a></li>
+          <li>
+            <button id="theme-toggle" class="small-btn" aria-pressed="false" title="Theme wechseln">Auto</button>
+          </li>
+          <!-- Admin placeholder: wird dynamisch eingefügt -->
         </ul>
-    </nav>
-
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>PaulsLaptops</h1>
-            <p>Top ThinkPads – direkt von eBay, live aktualisiert.</p>
-            <a href="#products" class="cta">Jetzt shoppen</a>
-        </div>
-    </section>
-	
-    <!-- PRODUCTS -->
-    <section class="products" id="products">
-        <div class="container">
-            <h2 class="section-title">Verfügbare Laptops</h2>
-            <div id="product-grid" class="product-grid"></div>
-        </div>
-    </section>
-     
-    <!-- IMPRESSUM – DIREKT IM HTML -->
-    <section class="impressum" id="impressum">
-        <div class="container">
-            <h2>Impressum</h2>
-            <div class="impressum-content">
-                <p><strong>Pauls Laptops</strong></p>
-                <p>Paul Lindner</p>
-                <p>Musterstraße 123</p>
-                <p>91275, Auerbach i.d.Opf.</p>
-                <p>Deutschland</p>
-                <p>Telefon: <a href="tel:+4915156863641">+49 1515 6863641</a></p>
-                <p>E-Mail: <a href="mailto:info@paulslaptops.de">info@paulslaptops.de</a></p>
-                <p><strong>Verantwortlich für den Inhalt:</strong> Paul Lindner</p>
-                <p><em>Alle Angaben ohne Gewähr. Preise können variieren.</em></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ADMIN MODAL – CYBER MODERN -->
-<div id="admin-modal" class="admin-modal" style="display:none;">
-    <div class="admin-modal-content">
-        <button class="admin-close" onclick="closeAdmin()">
-            <svg width="24" height="24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-
-        <!-- LOGIN -->
-        <div id="login-form" class="admin-section">
-            <h2 class="admin-title"><span class="neon">ADMIN</span> LOGIN</h2>
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <input type="password" id="admin-pass" class="admin-input" placeholder=" " />
-                    <label class="admin-label">Passwort</label>
-                    <div class="input-glow"></div>
-                </div>
-                <p class="input-hint">Geheim – nur für dich</p>
-            </div>
-            <button class="admin-btn primary" onclick="checkPassword()">
-                <span>Einloggen</span>
-                <div class="btn-glow"></div>
-            </button>
-        </div>
-
-        <!-- PANEL -->
-        <div id="admin-panel" class="admin-section" style="display:none;">
-            <h2 class="admin-title"><span class="neon">ADMIN</span> PANEL</h2>
-
-            <!-- ADD ITEM -->
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <input type="text" id="new-item-id" class="admin-input" placeholder=" " />
-                    <label class="admin-label">eBay Item-ID</label>
-                    <div class="input-glow"></div>
-                </div>
-                <p class="input-hint">Nur Zahlen (z.B. 123456789)</p>
-            </div>
-            <button class="admin-btn success" onclick="addItem()">
-                <span>Hinzufügen</span>
-                <div class="btn-glow"></div>
-            </button>
-
-            <!-- ITEM LIST -->
-            <div id="item-list" class="item-list-modern"></div>
-
-            <!-- RELOAD -->
-            <button class="admin-btn reload" onclick="loadProducts()">
-                <span>Shop neu laden</span>
-                <div class="btn-glow"></div>
-            </button>
-        </div>
+      </nav>
     </div>
-</div>
+  </header>
 
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <h1 id="hero-title" class="hero-title">PaulsLaptops</h1>
+        <p class="hero-sub">Top ThinkPads – direkt von eBay, live aktualisiert.</p>
+        <a class="btn primary" href="#products">Jetzt shoppen</a>
+      </div>
+    </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <p>© 2025 Pauls Laptops | <a href="#impressum">Impressum</a></p>
+    <!-- PRODUCTS -->
+    <section id="products" class="products">
+      <div class="container">
+        <h2 class="section-title">Verfügbare Laptops</h2>
+        <div id="product-grid" class="product-grid" role="list" aria-live="polite">
+          <!-- Beispiel-Produktkarten -->
+          <div class="product-card" role="listitem">
+            <h3>ThinkPad X1 Carbon</h3>
+            <div class="price">€1.299</div>
+            <div class="specs">
+              <span><strong>RAM:</strong> 16GB</span>
+              <span><strong>Speicher:</strong> 512GB SSD</span>
+              <span><strong>CPU:</strong> Intel i7</span>
+              <span><strong>GPU:</strong> Intel Iris Xe</span>
+            </div>
+            <div class="os-options">
+              <div class="os-button active">ZORIN OS</div>
+              <div class="os-button">UBUNTU</div>
+              <div class="os-button">Windows</div>
+            </div>
+            <div class="download-button">
+              <button>Jetzt kaufen</button>
+            </div>
+          </div>
+
+          <div class="product-card" role="listitem">
+            <h3>ThinkPad T14</h3>
+            <div class="price">€999</div>
+            <div class="specs">
+              <span><strong>RAM:</strong> 8GB</span>
+              <span><strong>Speicher:</strong> 256GB SSD</span>
+              <span><strong>CPU:</strong> Intel i5</span>
+              <span><strong>GPU:</strong> Intel UHD</span>
+            </div>
+            <div class="os-options">
+              <div class="os-button active">ZORIN OS</div>
+              <div class="os-button">UBUNTU</div>
+              <div class="os-button">Windows</div>
+            </div>
+            <div class="download-button">
+              <button>Jetzt kaufen</button>
+            </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <!-- SDK + SCRIPT -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/script.js"></script>
+    <!-- IMPRESSUM -->
+    <section id="impressum" class="impressum">
+      <div class="container">
+        <h2>Impressum</h2>
+        <address class="impressum-content">
+          <p><strong>Pauls Laptops</strong></p>
+          <p>Paul Lindner<br/>Musterstraße 123<br/>91275 Auerbach i.d.Opf.<br/>Deutschland</p>
+          <p>Telefon: <a href="tel:+4915156863641">+49 1515 6863641</a><br/>
+          E-Mail: <a href="mailto:info@paulslaptops.de">info@paulslaptops.de</a></p>
+          <p><strong>Verantwortlich für den Inhalt:</strong> Paul Lindner</p>
+          <p><em>Alle Angaben ohne Gewähr. Preise können variieren.</em></p>
+        </address>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Pauls Laptops | <a href="#impressum">Impressum</a></p>
+    </div>
+  </footer>
+
+  <!-- ADMIN MODAL (accessible) -->
+  <div id="admin-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="admin-title">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="document">
+      <button class="modal-close" id="admin-close" aria-label="Schließen">
+        ✕
+      </button>
+
+      <div class="modal-body">
+        <h3 id="admin-title" class="admin-title"><span class="neon">ADMIN</span> LOGIN</h3>
+
+        <form id="login-form" class="admin-form" onsubmit="return false;">
+          <label class="label" for="admin-pass">Passwort</label>
+          <input id="admin-pass" class="input" type="password" autocomplete="current-password" placeholder="Passwort" />
+
+          <div class="form-hint">Geheim – nur für dich</div>
+
+          <div class="form-actions">
+            <button id="check-btn" class="btn neutral" type="button">Prüfen</button>
+          </div>
+
+          <div id="password-confirm" class="confirm" aria-live="polite" hidden>
+            <p id="confirm-message" class="confirm-text"></p>
+            <div class="form-actions">
+              <button id="login-btn" class="btn primary" type="button">Einloggen</button>
+            </div>
+          </div>
+        </form>
+
+        <section id="admin-panel" class="admin-panel" hidden>
+          <h4>Admin Panel</h4>
+
+          <label class="label" for="new-item-id">eBay Item-ID</label>
+          <input id="new-item-id" class="input" type="text" placeholder="z. B. 123456789" inputmode="numeric" />
+
+          <div class="form-actions">
+            <button id="add-item-btn" class="btn success" type="button">Hinzufügen</button>
+            <button id="reload-btn" class="btn neutral" type="button">Shop neu laden</button>
+          </div>
+
+          <div id="item-list" class="item-list" aria-live="polite">
+            <!-- dynamische Einträge -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox (appendet by JS) -->
+  <!-- externes SDK + Script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="js/script.js" defer></script>
+
+  <script>
+    // OS-Auswahl pro Produktkarte
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.product-card').forEach(card => {
+        const buttons = card.querySelectorAll('.os-button');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>
