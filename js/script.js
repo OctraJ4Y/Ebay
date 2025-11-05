@@ -54,7 +54,7 @@ function createAdminBtn() {
 function openAdmin() { modal.style.display = 'flex'; }
 function closeAdmin() { modal.style.display = 'none'; }
 function checkPassword() {
-    if (document.getElementById('admin-pass').value === 'thinkpad2025') {
+    if (document.getElementById('admin-pass').value === 'adminpad') {
         localStorage.setItem('admin_logged_in', 'true');
         loginForm.style.display = 'none'; adminPanel.style.display = 'block';
         renderItemList(); if (adminBtn) adminBtn.classList.add('visible');
