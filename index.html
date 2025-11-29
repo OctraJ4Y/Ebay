@@ -40,7 +40,68 @@
       <div class="container hero-inner">
         <h1 id="hero-title" class="hero-title">PaulsLaptops</h1>
         <p class="hero-sub">Top ThinkPads – direkt von eBay, live aktualisiert.</p>
-        <a class="btn primary" href="#products">Jetzt shoppen</a>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <a class="btn primary" href="#configurator">Konfigurieren</a>
+          <a class="btn neutral" href="#products">Jetzt shoppen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIGURATOR -->
+    <section id="configurator" class="configurator">
+      <div class="container">
+        <h2 class="section-title">Laptop Konfigurator</h2>
+        <p class="config-intro">Konfiguriere deinen ThinkPad mit dem gewünschten Betriebssystem, RAM und Speicher.</p>
+        <div class="configurator-grid">
+          <!-- Laptop Auswahl -->
+          <div class="config-section">
+            <h3>Wähle dein Laptop</h3>
+            <div id="laptop-selection" class="laptop-selection">
+              <!-- Dynamisch geladene Laptops -->
+            </div>
+          </div>
+
+          <!-- Konfiguration -->
+          <div class="config-section">
+            <h3>Konfiguration</h3>
+            <form id="config-form" class="config-form">
+              <div class="form-group">
+                <label for="os-select">Betriebssystem</label>
+                <select id="os-select" class="input">
+                  <option value="windows">Windows</option>
+                  <option value="ubuntu">Ubuntu</option>
+                  <option value="zorin">Zorin OS</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="ram-range">RAM: <span id="ram-value">8GB</span></label>
+                <input type="range" id="ram-range" min="4" max="128" step="4" value="8" class="slider">
+                <div class="range-labels">
+                  <span>4GB</span>
+                  <span id="ram-max">32GB</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="storage-range">Speicher: <span id="storage-value">512GB</span></label>
+                <input type="range" id="storage-range" min="256" max="4096" step="256" value="512" class="slider">
+                <div class="range-labels">
+                  <span>256GB</span>
+                  <span id="storage-max">2TB</span>
+                </div>
+              </div>
+
+              <div class="price-summary">
+                <h4>Gesamtpreis: <span id="total-price">€0</span></h4>
+                <p id="base-price">Basispreis: €0</p>
+                <p id="upgrade-cost">Upgrade-Kosten: €0</p>
+              </div>
+
+              <button type="button" id="add-to-cart" class="btn primary">In den Warenkorb</button>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
 
